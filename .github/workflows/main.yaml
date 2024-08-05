@@ -1,0 +1,38 @@
+# Your workflow name.
+name: Deploy to heroku.
+
+# Run workflow on every push to main branch.
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+    
+
+# Your workflows jobs.
+jobs:
+  DeployDev:
+    name: Deploy to Dev
+    # needs: [Test-Local]
+    runs-on: ubuntu-latest
+    environment:
+      name: Development
+      # url: 'https://${{secrets.HEROKU_APP_NAME}}-dev.herokuapp.com/'
+    steps:
+      # Check-out your repository.
+      - name: Checkout
+        uses: actions/checkout@v2
+
+
+### ⬇ IMPORTANT PART ⬇ ###
+
+      - name: Build, Push and Release a Docker container to Heroku. # Your custom step name
+        uses: gonuit/heroku-docker-deploy@v1.3.3 # GitHub action name (leave it as it is).
+        with:
+          email: ${{ secrets.HEROKU_EMAIL }}
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
+          dockerfile_directory: ./
+          dockerfile_name: Dockerfile
+          docker_options: "--no-cache"
+          process_type: web
+
