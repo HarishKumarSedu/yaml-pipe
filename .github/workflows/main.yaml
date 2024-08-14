@@ -47,11 +47,11 @@ jobs:
          chmod 600 key.pem
      - name: Pull Docker image
        run: |
-         ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@your-ec2-instance-ip 'sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/pipe:v1.3'
+         ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@44.204.2.37 'sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/pipe:v1.3'
      - name: Stop running container
        run: |
-         ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@your-ec2-instance-ip 'sudo docker stop pipe || true'
-         ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@your-ec2-instance-ip 'sudo docker rm pipe || true'
+         ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@44.204.2.37 'sudo docker stop pipe || true'
+         ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@44.204.2.37 'sudo docker rm pipe || true'
      - name: Run new container
        run: |
-         ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@your-ec2-instance-ip 'sudo docker run -d --name pipe -p 5000:5000 ${{ secrets.DOCKERHUB_USERNAME }}/pipe:v1.3'
+         ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@44.204.2.37 'sudo docker run -d --name pipe -p 5000:5000 ${{ secrets.DOCKERHUB_USERNAME }}/pipe:v1.3'
