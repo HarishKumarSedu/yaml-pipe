@@ -4,7 +4,7 @@ name: Deploy to heroku.
 # Run workflow on every push to master branch.
 on:
   push:
-    branches: [main]
+    # branches: [main]  # remove the comment to to execute ci-cd with gitactions and AWS
 
 # Your workflows jobs.
 jobs:
@@ -41,10 +41,12 @@ jobs:
        with:
          username: ${{ secrets.DOCKERHUB_USERNAME }}
          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      #  Copy AWS_ACCESS_PRIVATE_KEY to github secrets 
      - name: Set permissions for private key
        run: |
          echo "${{ secrets.AWS_PRIVATE_KEY }}" > key.pem
          chmod 600 key.pem
+      # your EC2 instance public ip 44.204.2.37
      - name: Pull Docker image
        run: |
          ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@44.204.2.37 'sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/pipe:v1.3'
